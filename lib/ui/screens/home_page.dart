@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_onboarding/models/constants.dart';
 import 'package:flutter_onboarding/models/plants.dart';
 import 'package:flutter_onboarding/ui/screens/recommended_tab.dart';
+import 'package:flutter_onboarding/ui/screens/widgets/autoCompleteField.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +37,6 @@ class _HomePageState extends State<HomePage>
       'Indoor',
       'Outdoor',
       'Garden',
-
     ];
 
     //Toggle Favorite button
@@ -62,41 +62,37 @@ class _HomePageState extends State<HomePage>
                   color: Constants.primaryColor.withOpacity(.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 7,
+                child: /*AutocompleteField(
+                    Plant.plantList
+                  .map((e) => e.plantName)
+                  .toSet()
+                  .toList(),
+                    suffixIcon: IconButton(
+                icon: Icon(Icons.mic,
+                    color: Colors.black54.withOpacity(.6)),
+                onPressed: () {},
                     ),
-                    Icon(
-                      Icons.search,
-                      color: Colors.black54.withOpacity(.6),
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    Expanded(
-                        child: TextField(
-                      style: GoogleFonts.montserrat(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54),
-                      showCursor: false,
-                      decoration: InputDecoration(
-                        hintText: 'Search Plant',
-                        hintStyle: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w600, fontSize: 17),
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    )),
-                    IconButton(
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black54.withOpacity(.6),
+                  ),
+                  )*/
+
+                AutocompleteFormField(
+
+                   list : Plant.plantList
+                        .map((e) => e.plantName)
+                        .toSet()
+                        .toList(),
+                    suffixIcon: IconButton(
                       icon: Icon(Icons.mic,
                           color: Colors.black54.withOpacity(.6)),
                       onPressed: () {},
                     ),
-                  ],
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black54.withOpacity(.6),
+                    ),
                 ),
               )
             ],

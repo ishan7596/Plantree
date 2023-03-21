@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_onboarding/models/constants.dart';
+import 'package:flutter_onboarding/ui/screens/widgets/mySnackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,13 +17,25 @@ class ScanPage extends StatefulWidget {
 class _ScanPageState extends State<ScanPage> {
   var getResults = "Scan to Open";
   Future<void>? _launched;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    scanQR().then((value) {
+      isLoading = false;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Stack(
+      body: isLoading ? Center(child: CircularProgressIndicator()):Stack(
         children: [
           Positioned(
               top: 50,
@@ -100,7 +113,7 @@ class _ScanPageState extends State<ScanPage> {
                       height: 20,
                     ),
                     Text(
-                      'Tap Here to Scan',
+                      'Tap Here to Scan Again',
                       style: GoogleFonts.montserrat(
                         color: Constants.primaryColor.withOpacity(.80),
                         fontWeight: FontWeight.w500,
@@ -120,23 +133,15 @@ class _ScanPageState extends State<ScanPage> {
                 child: InkWell(
               onTap: () {
                 Clipboard.setData(new ClipboardData(text: getResults));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    "Copied to Clipboard",
-                    style: GoogleFonts.montserrat(
-                      color: Colors.green.shade900,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  backgroundColor: Colors.green.shade50,
-                  duration: Duration(seconds: 1),
-                ));
+                showSnackbar("Copied", "Successfully Copied Link to Clipboard");
                 // key.currentState!.showSnackBar(
                 //      SnackBar(content: new Text("Copied to Clipboard"),));
               },
               child: Text(
                 getResults,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(
+
                     color: Colors.green.shade900,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -160,14 +165,19 @@ class _ScanPageState extends State<ScanPage> {
     );
   }
 
-  void scanQR() async {
+  Future scanQR() async {
     try {
-      final qrcode = await FlutterBarcodeScanner.scanBarcode(
+      String qrcode = await FlutterBarcodeScanner.scanBarcode(
           "#00FF00", "Cancel", false, ScanMode.QR);
       if (!mounted) return;
 
       setState(() {
-        getResults = qrcode;
+        if(qrcode == "-1"){
+          getResults = "No QR Found" ;
+        }else{
+          getResults = qrcode;
+        }
+
       });
       print("QR code Results :--");
       print(qrcode);

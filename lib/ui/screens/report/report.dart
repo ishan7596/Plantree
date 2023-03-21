@@ -108,19 +108,7 @@ class _ReportState extends State<Report> {
     );
   }
 
-  snackBarMsg(BuildContext context, String msg) {
-    var sb = SnackBar(
-      elevation: kRadius,
-      content: Text(msg),
-      duration: Duration(seconds: 2),
-      action: SnackBarAction(
-        // textColor: kWhiteColor,
-        label: 'OK',
-        onPressed: () {},
-      ),
-    );
-    // scaffoldKey.currentState.showSnackBar(sb);
-  }
+
 
     CallMe()async {
 
