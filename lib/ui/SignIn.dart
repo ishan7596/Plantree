@@ -73,6 +73,7 @@ class _SignInState extends State<SignIn> {
 
                     TextFormField(
                       controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: GoogleFonts.montserrat(
                           color: Colors.black54,
@@ -112,12 +113,14 @@ class _SignInState extends State<SignIn> {
                           return 'Password Required!!';
                         } else if (value.length < 8) {
                           return 'Please Enter Minimum 8 character!!';
-                        }else if (RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value) ==
-                            false) {
-                          return 'Password should contain upper,lower,digit and Special character';
-                        }  else {
+                        }
+                        // else if (RegExp(
+                        //     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        //     .hasMatch(value) ==
+                        //     false) {
+                        //   return 'Password should contain upper,lower,digit and Special character';
+                        // }
+                        else {
                           return null;
                         }
                       },
@@ -196,30 +199,65 @@ class _SignInState extends State<SignIn> {
               const SizedBox(
                 height: 10,
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                          child: const ForgotPassword(),
-                          type: PageTransitionType.bottomToTop));
-                },
-                child: Text.rich(
-                  TextSpan(children: [
-                    TextSpan(
-                      text: 'Forgot Password? ',
-                      style: TextStyle(
-                        color: Constants.blackColor,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                              child: const ForgotPassword(),
+                              type: PageTransitionType.bottomToTop));
+                    },
+                    child: Text.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                          text: 'Forgot Password?',
+                          style: TextStyle(
+                            color: Constants.blackColor,
+                          ),
+                        ),
+                        // TextSpan(
+                        //   text: 'Reset Here',
+                        //   style: TextStyle(
+                        //     color: Constants.primaryColor,
+                        //   ),
+                        // ),
+                      ]),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                              child: const SignUp(),
+                              type: PageTransitionType.bottomToTop));
+                    },
+                    child: Center(
+                      child: Text.rich(
+
+                        TextSpan(children: [
+                          // TextSpan(
+                          //   text: 'New to App? ',
+                          //   style: GoogleFonts.montserrat(
+                          //       color: Constants.blackColor,
+                          //       fontWeight: FontWeight.w500),
+                          // ),
+                          TextSpan(
+                            text: 'Sign Up',
+
+                            style: GoogleFonts.montserrat(
+                                color: Constants.primaryColor,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ]),
                       ),
                     ),
-                    TextSpan(
-                      text: 'Reset Here',
-                      style: TextStyle(
-                        color: Constants.primaryColor,
-                      ),
-                    ),
-                  ]),
-                ),
+                  ),
+                ],
               ),
               // const SizedBox(
               //   height: 0,
@@ -266,33 +304,7 @@ class _SignInState extends State<SignIn> {
               const SizedBox(
                 height:10,
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                          child: const SignUp(),
-                          type: PageTransitionType.bottomToTop));
-                },
-                child: Center(
-                  child: Text.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                        text: 'New to App? ',
-                        style: GoogleFonts.montserrat(
-                            color: Constants.blackColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      TextSpan(
-                        text: 'Register',
-                        style: GoogleFonts.montserrat(
-                            color: Constants.primaryColor,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
+
             ],
           ),
         ),

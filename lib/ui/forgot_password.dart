@@ -90,6 +90,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   child: TextFormField(
                     controller: emailController,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.emailAddress,
                     style: GoogleFonts.montserrat(
                         color: Colors.black54,
                         fontSize: 20,

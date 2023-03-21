@@ -8,28 +8,17 @@ class CommanDialog {
 
     Get.dialog(
       Dialog(
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
+            color: Colors.transparent,
             height: 40,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                ),
-                Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  title,
-                ),
-              ],
+            child: Center(
+              child: CircularProgressIndicator.adaptive(),
             ),
           ),
         ),
