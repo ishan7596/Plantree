@@ -21,127 +21,123 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: widget.addedToCartPlants.isEmpty
-          ? Center(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => RootPage()),
-                          (route) => false);
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      // child: GestureDetector(
-                      //     onTap: () {
-                      //       Navigator.of(context).pushAndRemoveUntil(
-                      //           MaterialPageRoute(
-                      //               builder: (context) => RootPage()),
-                      //           (route) => false);
-                      //     },
-                          child: Image.asset('assets/images/add-cart.png')),
+    return widget.addedToCartPlants.isEmpty
+        ? Center(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => RootPage()),
+                  (route) => false);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+                height: 100,
+                // child: GestureDetector(
+                //     onTap: () {
+                //       Navigator.of(context).pushAndRemoveUntil(
+                //           MaterialPageRoute(
+                //               builder: (context) => RootPage()),
+                //           (route) => false);
+                //     },
+                child: Image.asset('assets/images/add-cart.png')),
 
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Your Cart is Empty \nClick here to Add Plants',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.montserrat(
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Your Cart is Empty \nClick here to Add Plants',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.montserrat(
 
-                        color: Constants.primaryColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
+                color: Constants.primaryColor,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
               ),
-            )
-          : Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 30),
-              height: size.height,
-              child: Column(
+            ),
+          ],
+        ),
+      ),
+    )
+        : Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(10),
+                  itemCount: widget.addedToCartPlants.length,
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return PlantWidget(
+                        index: index,
+                        plantList: widget.addedToCartPlants);
+                  }),
+            ),
+            const Divider(
+              thickness: 1.0,
+              indent: 10,
+              endIndent: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: widget.addedToCartPlants.length,
-                        scrollDirection: Axis.vertical,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return PlantWidget(
-                              index: index,
-                              plantList: widget.addedToCartPlants);
-                        }),
+                  Text(
+                    'Total :',
+                    style: GoogleFonts.montserrat(
+                        fontSize: 23,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.green.shade900),
                   ),
-                  Column(
-                    children: [
-                      const Divider(
-                        thickness: 1.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Total :',
-                            style: GoogleFonts.montserrat(
-                                fontSize: 23,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.green.shade900),
-                          ),
 
-                          InkWell(
-                            onTap: (){
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => Payment()));
-                            },
-                            child: Container(
-                              width: 130,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: Constants.primaryColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(0, 1),
-                                      blurRadius: 5,
-                                      color: Constants.primaryColor.withOpacity(.3),
-                                    )
-                                  ]),
-                              child:  Center(
-                                child: Text(
-                                  'Pay \$${total()}',
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ),
-                            ),
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Payment()));
+                    },
+                    child: Container(
+                      width: 130,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Constants.primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(0, 1),
+                              blurRadius: 5,
+                              color: Constants.primaryColor.withOpacity(.3),
+                            )
+                          ]),
+                      child:  Center(
+                        child: Text(
+                          'Pay ₹${total()}',
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold
                           ),
-                          // Text(
-                          //   r'$'+total(),
-                          //   style: GoogleFonts.montserrat(
-                          //     fontSize: 24.0,
-                          //     color: Constants.primaryColor,
-                          //     fontWeight: FontWeight.bold,
-                          //   ),
-                          // ),
-                        ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
+                  // Text(
+                  //   ₹+total(),
+                  //   style: GoogleFonts.montserrat(
+                  //     fontSize: 24.0,
+                  //     color: Constants.primaryColor,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
-    );
+          ],
+        );
   }
   String total(){
     int a = 0;

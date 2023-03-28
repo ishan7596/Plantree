@@ -273,6 +273,7 @@ class RegisterPageState extends State<RegisterPage> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 controller: mNo,
+                                maxLength: 10,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly

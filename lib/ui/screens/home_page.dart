@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_onboarding/models/constants.dart';
 import 'package:flutter_onboarding/models/plants.dart';
 import 'package:flutter_onboarding/ui/screens/recommended_tab.dart';
@@ -46,56 +47,31 @@ class _HomePageState extends State<HomePage>
 
     return Scaffold(
         body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                width: size.width * .9,
-                decoration: BoxDecoration(
-                  color: Constants.primaryColor.withOpacity(.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: /*AutocompleteField(
-                    Plant.plantList
-                  .map((e) => e.plantName)
-                  .toSet()
-                  .toList(),
-                    suffixIcon: IconButton(
-                icon: Icon(Icons.mic,
-                    color: Colors.black54.withOpacity(.6)),
-                onPressed: () {},
-                    ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.black54.withOpacity(.6),
-                  ),
-                  )*/
+          // margin: EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8.0,
+          ),
+          constraints: BoxConstraints(maxHeight: 300),
+          width: size.width * .9,
 
-                AutocompleteFormField(
-
-                   list : Plant.plantList
-                        .map((e) => e.plantName)
-                        .toSet()
-                        .toList(),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.mic,
-                          color: Colors.black54.withOpacity(.6)),
-                      onPressed: () {},
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.black54.withOpacity(.6),
-                    ),
-                ),
-              )
-            ],
+          decoration: BoxDecoration(
+            color: Constants.primaryColor.withOpacity(.2),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: AutocompleteFormField(
+            list: Plant.plantList.map((e) => e.plantName).toSet().toList(),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.mic, color: Colors.black54.withOpacity(.6)),
+              onPressed: () {},
+            ),
+            prefixIcon: Icon(
+              Icons.search,
+              color: Colors.black54.withOpacity(.6),
+            ),
           ),
         ),
         SizedBox(
@@ -273,7 +249,7 @@ class _HomePageState extends State<HomePage>
         //                       borderRadius: BorderRadius.circular(10),
         //                     ),
         //                     child: Text(
-        //                       r'$' + _plantList[index].price.toString(),
+        //                       ₹ + _plantList[index].price.toString(),
         //                       style: GoogleFonts.montserrat(
         //                           color: Constants.primaryColor,
         //                           fontWeight: FontWeight.bold,

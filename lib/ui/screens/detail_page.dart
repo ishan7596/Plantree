@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding/models/constants.dart';
 import 'package:flutter_onboarding/models/plants.dart';
@@ -9,7 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 class DetailPage extends StatefulWidget {
   final int plantId;
 
-  const DetailPage({Key? key, required this.plantId}) : super(key: key);
+  const DetailPage({
+    Key? key,
+    required this.plantId,
+  }) : super(key: key);
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -28,203 +32,372 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     List<Plant> _plantList = Plant.plantList;
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Constants.primaryColor.withOpacity(.15),
-                    ),
-                    child: Icon(
-                      Icons.close,
-                      color: Constants.primaryColor,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    debugPrint('favorite');
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Constants.primaryColor.withOpacity(.15),
-                    ),
-                    child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            bool isFavorited = toggleIsFavorated(
-                                _plantList[widget.plantId].isFavorated);
-                            _plantList[widget.plantId].isFavorated =
-                                isFavorited;
-                          });
-                        },
-                        icon: Icon(
-                          _plantList[widget.plantId].isFavorated == true
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Constants.primaryColor,
-                        )),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.only(top: 80, left: 30, right: 30),
-              height: size.height * .5,
-              width: size.width,
-              decoration: BoxDecoration(
-                color: Colors.green.shade300.withOpacity(0.3),
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+      body: SafeArea(
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                expandedHeight: 450.0,
+                // backgroundColor: Colors.white,
+
+                pinned: false,
+
+                leading: SizedBox(),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  //collapseMode: CollapseMode.pin,
+                  background: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _plantList[widget.plantId].plantName,
-                            style: TextStyle(
-                              color: Constants.primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30.0,
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color:
+                                  Constants.primaryColor.withOpacity(.15),
+                                ),
+                                child: Icon(
+                                  Icons.close,
+                                  color: Constants.primaryColor,
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            r'$' + _plantList[widget.plantId].price.toString(),
-                            style: GoogleFonts.montserrat(
-                              color: Constants.blackColor,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
+                            GestureDetector(
+                              onTap: () {
+                                debugPrint('favorite');
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color:
+                                  Constants.primaryColor.withOpacity(.15),
+                                ),
+                                child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        bool isFavorited = toggleIsFavorated(
+                                            _plantList[widget.plantId]
+                                                .isFavorated);
+                                        _plantList[widget.plantId].isFavorated =
+                                            isFavorited;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      _plantList[widget.plantId].isFavorated ==
+                                          true
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: Constants.primaryColor,
+                                    )),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      Row(
+                      Stack(
+                        alignment: Alignment.bottomCenter,
                         children: [
-                          Text(
-                            _plantList[widget.plantId].rating.toString(),
-                            style: GoogleFonts.montserrat(
-                                fontSize: 30.0,
-                                color: Constants.primaryColor,
-                                fontWeight: FontWeight.w600),
+                          Container(
+                            height: 50,
+                            width: size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(30),
+                                topLeft: Radius.circular(30),
+                              ),
+                              color: Colors.green.shade300.withOpacity(0.3),
+                            ),
                           ),
-                          Icon(
-                            Icons.star,
-                            size: 30.0,
-                            color: Constants.primaryColor,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Hero(
+                                  transitionOnUserGestures: true,
+                                  tag:
+                                  "plant${_plantList[widget.plantId].imageURL}",
+                                  child: Image.asset(
+                                    _plantList[widget.plantId].imageURL,
+                                    height: 370,
+                                  )),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  PlantFeature(
+                                    title: 'Size',
+                                    plantFeature:
+                                    _plantList[widget.plantId].size,
+                                  ),
+                                  SizedBox(height: 15),
+                                  PlantFeature(
+                                    title: 'Humidity',
+                                    plantFeature: _plantList[widget.plantId]
+                                        .humidity
+                                        .toString(),
+                                  ),
+                                  SizedBox(height: 15),
+                                  PlantFeature(
+                                    title: 'Temperature',
+                                    plantFeature:
+                                    _plantList[widget.plantId].temperature,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5.0,
-                  ),
-                  Expanded(
-                    child: Text(
-                      _plantList[widget.plantId].decription,
-                      textAlign: TextAlign.justify,
-                      style: GoogleFonts.montserrat(
-                        height: 1.5,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Constants.blackColor.withOpacity(.7),
-                      ),
+                ),
+              ),
+            ];
+          },
+          body: Container(
+            padding: EdgeInsets.only(bottom: 10, right: 20, left: 20, top: 5),
+            color: Colors.green.shade300.withOpacity(0.3),
+            child: SingleChildScrollView(
+              child: Theme(
+                data: ThemeData(
+                  dividerColor: Colors.transparent,
+                  unselectedWidgetColor: Colors.green.shade900,
+                  textTheme: TextTheme(
+                    subtitle1: TextStyle(
+                      color: Colors.green,
                     ),
                   ),
-                ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _plantList[widget.plantId].plantName,
+                              style: TextStyle(
+                                color: Constants.primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30.0,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '₹' + _plantList[widget.plantId].price.toString(),
+                              style: GoogleFonts.montserrat(
+                                color: Constants.blackColor,
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              _plantList[widget.plantId].rating.toString(),
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 30.0,
+                                  color: Constants.primaryColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Icon(
+                              Icons.star,
+                              size: 30.0,
+                              color: Constants.primaryColor,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    // Expanded(
+                    //   child: Text(
+                    //     _plantList[widget.plantId].decription,
+                    //     textAlign: TextAlign.justify,
+                    //     style: GoogleFonts.montserrat(
+                    //       height: 1.5,
+                    //       fontSize: 18,
+                    //       fontWeight: FontWeight.w600,
+                    //       color: Constants.blackColor.withOpacity(.7),
+                    //     ),
+                    //   ),
+                    // ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          iconColor: Colors.green.shade900,
+                          collapsedIconColor: Colors.green.shade900,
+                          title: Text(
+                            "Description",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.green.shade900,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: [
+                            Text(
+                              _plantList[widget.plantId].decription,
+                              textAlign: TextAlign.justify,
+                              style: GoogleFonts.montserrat(
+                                height: 1.5,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Constants.blackColor.withOpacity(.7),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // const SizedBox(
+                        //   height: 5.0,
+                        // ),
+                        ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          iconColor: Colors.green.shade900,
+                          collapsedIconColor: Colors.green.shade900,
+                          title: Text(
+                            "How to Grow and Care",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.green.shade900,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: [
+                            Text(
+                              _plantList[widget.plantId].care,
+                              textAlign: TextAlign.justify,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                              style: GoogleFonts.montserrat(
+                                height: 1.5,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Constants.blackColor.withOpacity(.7),
+                              ),
+                            ),
+                          ],
+                        ),
+                        ExpansionTile(
+                          initiallyExpanded: true,
+                          iconColor: Colors.green.shade900,
+                          collapsedIconColor: Colors.green.shade900,
+                          tilePadding: EdgeInsets.zero,
+                          title: Text(
+                            "Photos",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.green.shade900,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: [
+                            SizedBox(
+                              height: size.height * .35,
+                              child: ListView.builder(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  itemCount: _plantList[widget.plantId]
+                                      .plantImages
+                                      .length,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (BuildContext context, int i) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context, builder: (context) {
+                                          return AlertDialog(content: InteractiveViewer(
+                                            maxScale: 2,
+                                            minScale: 1,
+                                            child: Container(
+                                                height: 400,
+                                                width: 700,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          _plantList[widget.plantId]
+                                                              .plantImages[i]),
+                                                      fit: BoxFit.cover), )),
+                                          ),);
+                                        },);
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) => DetailPage(
+                                        //         plantId: widget.plantList[index].plantId,
+                                        //       ),
+                                        //     ));
+                                      },
+                                      child: Container(
+                                        width: 250,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  _plantList[widget.plantId]
+                                                      .plantImages[i]),
+                                              fit: BoxFit.cover),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                blurRadius: 5,
+                                                color: Colors.grey,
+                                                spreadRadius: 0,
+                                                offset: Offset(3, 3))
+                                          ],
+                                          color: Color(0xff86bd99),
+                                          borderRadius:
+                                          BorderRadius.circular(20),
+                                        ),
+                                        // child: Image.asset(_plantList[widget.plantId].plantImages[i],fit: BoxFit.cover),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 55,),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-          Positioned(
-            top: 100,
-            left: 20,
-            right: 20,
-            child: Container(
-              width: size.width * .8,
-              height: size.height * .8,
-              padding: const EdgeInsets.all(20),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 10,
-                    left: 0,
-                    child: SizedBox(
-                      height: 350,
-                      child: Hero(
-                        transitionOnUserGestures: true,
-                          tag: "plant${_plantList[widget.plantId].imageURL}",
-                          child: Image.asset(
-                              _plantList[widget.plantId].imageURL)),
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 0,
-                    child: SizedBox(
-                      height: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          PlantFeature(
-                            title: 'Size',
-                            plantFeature: _plantList[widget.plantId].size,
-                          ),
-                          PlantFeature(
-                            title: 'Humidity',
-                            plantFeature:
-                                _plantList[widget.plantId].humidity.toString(),
-                          ),
-                          PlantFeature(
-                            title: 'Temperature',
-                            plantFeature:
-                                _plantList[widget.plantId].temperature,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
       floatingActionButton: SizedBox(
         width: size.width * .9,

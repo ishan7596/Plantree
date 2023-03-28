@@ -6,15 +6,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/constants.dart';
 
-void showSnackbar(String title, String des) {
+void showSnackbar(String title, String des , {SnackPosition? snackPosition}) {
 
   Get.snackbar(
       title,
       des,
-      snackPosition: SnackPosition.TOP,
+      snackPosition: snackPosition ?? SnackPosition.TOP,
+      margin: EdgeInsets.all(10),
       backgroundColor: Colors.grey.withOpacity(.3),
       colorText: Colors.green.shade900,
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(seconds: 2),
     titleText: Text(title,style: GoogleFonts.montserrat(
         fontWeight: FontWeight.bold, fontSize: 17,color: Colors.green.shade900),),
     messageText: Text(des,style: GoogleFonts.montserrat(

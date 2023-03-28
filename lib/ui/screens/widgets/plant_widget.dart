@@ -94,7 +94,7 @@ class _PlantWidgetState extends State<PlantWidget> {
             Container(
               padding: const EdgeInsets.only(right: 10),
               child: Text(
-                r'$' + widget.plantList[widget.index].price.toString(),
+                "₹" + widget.plantList[widget.index].price.toString(),
                 style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,

@@ -117,6 +117,7 @@ class _AutocompleteFormFieldState extends State<AutocompleteFormField> {
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
             onFieldSubmitted: (value) {
@@ -167,60 +168,80 @@ class _AutocompleteFormFieldState extends State<AutocompleteFormField> {
           //   SizedBox(height: 16),
           // },
           // _selectedValue.text ==
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: widget.list.length,
-            itemBuilder: (context, index) {
-              final suggestion = widget.list[index];
-              if (_selectedValue.text.isNotEmpty &&
-                  suggestion
-                      .toLowerCase()
-                      .contains(_selectedValue.text.toLowerCase()) &&
-                  _selectedValue.text != suggestion) {
-                return GestureDetector(
-                  onTap: () {
-                    // Plant.plantList;
-                    int? id;
-                    for (Plant i in Plant.plantList) {
-                      if (i.plantName == suggestion) {
-                        id = i.plantId;
-                      }
-                    }
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              itemCount: widget.list.length,
+              itemBuilder: (context, index) {
+                final suggestion = widget.list[index];
+                if (_selectedValue.text.isNotEmpty &&
+                    suggestion
+                        .toLowerCase()
+                        .contains(_selectedValue.text.toLowerCase()) &&
+                    _selectedValue.text != suggestion) {
 
-                  if(id != null)  {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailPage(
-                              plantId: id!,
-                            ),
-                          )).then((value) {
-                        _selectedValue.clear();
-                        setState(() {});
-                      });
-                    }
-                  },
-                  child: ListTile(
-                    title: Text(
-                      suggestion,
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w600, fontSize: 17),
+                  return GestureDetector(
+                    onTap: () {
+                      // Plant.plantList;
+                      int? id;
+                      for (Plant i in Plant.plantList) {
+                        if (i.plantName == suggestion) {
+                          id = i.plantId;
+                        }
+                      }
+
+                      if (id != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailPage(
+                                plantId: id!,
+                              ),
+                            )).then((value) {
+                          _selectedValue.clear();
+                          setState(() {});
+                        });
+                      }
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Divider(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  suggestion,
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w600, fontSize: 15),
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(Icons.north_west),
+                                  onPressed: () {
+                                    setState(() {
+                                      _selectedValue.text = suggestion;
+                                    });
+                                  }),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    contentPadding: EdgeInsets.only(left: 10),
-                    trailing: IconButton(
-                        icon: Icon(Icons.north_west),
-                        onPressed: () {
-                          setState(() {
-                            _selectedValue.text = suggestion;
-                          });
-                        }),
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
           ),
         ],
       ),
