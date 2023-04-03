@@ -30,11 +30,11 @@ class _DetailPageState extends State<DetailPage> {
     return !isSelected;
   }
 
+  int numOfItems = 1;
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     List<Plant> _plantList = Plant.plantList;
     return Scaffold(
       body: SafeArea(
@@ -70,7 +70,7 @@ class _DetailPageState extends State<DetailPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color:
-                                  Constants.primaryColor.withOpacity(.15),
+                                      Constants.primaryColor.withOpacity(.15),
                                 ),
                                 child: Icon(
                                   Icons.close,
@@ -88,7 +88,7 @@ class _DetailPageState extends State<DetailPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color:
-                                  Constants.primaryColor.withOpacity(.15),
+                                      Constants.primaryColor.withOpacity(.15),
                                 ),
                                 child: IconButton(
                                     onPressed: () {
@@ -102,7 +102,7 @@ class _DetailPageState extends State<DetailPage> {
                                     },
                                     icon: Icon(
                                       _plantList[widget.plantId].isFavorated ==
-                                          true
+                                              true
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       color: Constants.primaryColor,
@@ -133,7 +133,7 @@ class _DetailPageState extends State<DetailPage> {
                               Hero(
                                   transitionOnUserGestures: true,
                                   tag:
-                                  "plant${_plantList[widget.plantId].imageURL}",
+                                      "plant${_plantList[widget.plantId].imageURL}",
                                   child: Image.asset(
                                     _plantList[widget.plantId].imageURL,
                                     height: 370,
@@ -146,7 +146,7 @@ class _DetailPageState extends State<DetailPage> {
                                   PlantFeature(
                                     title: 'Size',
                                     plantFeature:
-                                    _plantList[widget.plantId].size,
+                                        _plantList[widget.plantId].size,
                                   ),
                                   SizedBox(height: 15),
                                   PlantFeature(
@@ -159,7 +159,7 @@ class _DetailPageState extends State<DetailPage> {
                                   PlantFeature(
                                     title: 'Temperature',
                                     plantFeature:
-                                    _plantList[widget.plantId].temperature,
+                                        _plantList[widget.plantId].temperature,
                                   ),
                                 ],
                               ),
@@ -190,51 +190,94 @@ class _DetailPageState extends State<DetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
+                    SizedBox(height: 10),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _plantList[widget.plantId].plantName,
-                              style: TextStyle(
-                                color: Constants.primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30.0,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '₹' + _plantList[widget.plantId].price.toString(),
-                              style: GoogleFonts.montserrat(
-                                color: Constants.blackColor,
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          _plantList[widget.plantId].plantName,
+                          style: TextStyle(
+                            color: Constants.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30.0,
+                          ),
                         ),
+
                         Row(
                           children: [
                             Text(
                               _plantList[widget.plantId].rating.toString(),
                               style: GoogleFonts.montserrat(
-                                  fontSize: 30.0,
+                                  fontSize: 25.0,
                                   color: Constants.primaryColor,
                                   fontWeight: FontWeight.w600),
                             ),
                             Icon(
                               Icons.star,
-                              size: 30.0,
+                              size: 25.0,
                               color: Constants.primaryColor,
                             ),
                           ],
                         ),
+
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+
+                        Text(
+                          '₹' +
+                              _plantList[widget.plantId]
+                                  .price
+                                  .toString(),
+                          style: GoogleFonts.montserrat(
+                            color: Constants.blackColor,
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            buildOutlineButton(
+                              icon: Icons.remove,
+                              press: () {
+                                if (numOfItems > 1) {
+                                  setState(() {
+                                    numOfItems--;
+                                  });
+                                }
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                numOfItems.toString().padLeft(2, "0"),
+                                style: GoogleFonts.montserrat(
+                                    color: Constants.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24
+                                ),
+                              ),
+                            ),
+                            buildOutlineButton(
+                                icon: Icons.add,
+                                press: () {
+                                  setState(() {
+                                    numOfItems++;
+                                  });
+                                }),
+
+                          ],
+                        )
+
                       ],
                     ),
                     const SizedBox(
@@ -300,7 +343,7 @@ class _DetailPageState extends State<DetailPage> {
                           children: [
                             Text(
                               _plantList[widget.plantId].care,
-                              textAlign: TextAlign.justify,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                              textAlign: TextAlign.justify,
                               style: GoogleFonts.montserrat(
                                 height: 1.5,
                                 fontSize: 15,
@@ -337,21 +380,27 @@ class _DetailPageState extends State<DetailPage> {
                                     return GestureDetector(
                                       onTap: () {
                                         showDialog(
-                                          context: context, builder: (context) {
-                                          return AlertDialog(content: InteractiveViewer(
-                                            maxScale: 2,
-                                            minScale: 1,
-                                            child: Container(
-                                                height: 400,
-                                                width: 700,
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          _plantList[widget.plantId]
-                                                              .plantImages[i]),
-                                                      fit: BoxFit.cover), )),
-                                          ),);
-                                        },);
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: InteractiveViewer(
+                                                maxScale: 2,
+                                                minScale: 1,
+                                                child: Container(
+                                                    height: 400,
+                                                    width: 700,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              _plantList[widget
+                                                                      .plantId]
+                                                                  .plantImages[i]),
+                                                          fit: BoxFit.cover),
+                                                    )),
+                                              ),
+                                            );
+                                          },
+                                        );
                                         // Navigator.push(
                                         //     context,
                                         //     MaterialPageRoute(
@@ -379,7 +428,7 @@ class _DetailPageState extends State<DetailPage> {
                                           ],
                                           color: Color(0xff86bd99),
                                           borderRadius:
-                                          BorderRadius.circular(20),
+                                              BorderRadius.circular(20),
                                         ),
                                         // child: Image.asset(_plantList[widget.plantId].plantImages[i],fit: BoxFit.cover),
                                       ),
@@ -389,7 +438,9 @@ class _DetailPageState extends State<DetailPage> {
                           ],
                         ),
 
-                        SizedBox(height: 55,),
+                        SizedBox(
+                          height: 55,
+                        ),
                       ],
                     )
                   ],
@@ -468,6 +519,31 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox buildOutlineButton(
+      {required IconData icon, void Function()? press}) {
+    return SizedBox(
+      width: 40,
+      height: 32,
+      child: OutlinedButton(
+
+        style: OutlinedButton.styleFrom(
+         foregroundColor: Colors.green.shade900,
+          padding: EdgeInsets.zero,
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13),
+          ),
+        ),
+        onPressed: press,
+        child: Icon(
+          icon,
+          color: Colors.green.shade900,
+          size: 25,
         ),
       ),
     );
