@@ -384,7 +384,7 @@ class _DetailPageState extends State<DetailPage> {
                                           builder: (context) {
                                             return AlertDialog(
                                               content: InteractiveViewer(
-                                                maxScale: 2,
+                                                maxScale: 3,
                                                 minScale: 1,
                                                 child: Container(
                                                     height: 400,
