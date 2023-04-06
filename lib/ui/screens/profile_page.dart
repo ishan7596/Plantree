@@ -102,37 +102,76 @@ class _ProfilePageState extends State<ProfilePage> {
                             image: DecorationImage(
                                 image: AssetImage("assets/images/12345.jpg"),
                                 fit: BoxFit.cover)),
-                        child: ClipOval(
-                          // child: Image.network(
-                          //   "https://firebasestorage.googleapis.com/v0/b/plant-shopp.appspot.com/o/${FirebaseAuth.instance.currentUser?.uid}?alt=media&token=c47bb6e6-74ee-4042-86ac-9f182f96698e",
-                          //   fit: BoxFit.cover,
-                          //   errorBuilder: (context, error, stackTrace) {
-                          //     return Image.asset(
-                          //       "assets/images/12345.jpg",
-                          //       fit: BoxFit.cover,
-                          //     );
-                          //   },
-                          //   loadingBuilder: (context, child, loadingProgress) {
-                          //     return Center(child: CircularProgressIndicator());
-                          //   },
-                          // ),
+                        child: GestureDetector(
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: InteractiveViewer(
+                                    maxScale: 3,
+                                    minScale: 1,
+                                    child: Container(
+                                        height: 400,
+                                        width: 700,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: Image.network(
+                                                "https://firebasestorage.googleapis.com/v0/b/plant-shopp.appspot.com/o/${FirebaseAuth.instance.currentUser?.uid}?alt=media&token=c47bb6e6-74ee-4042-86ac-9f182f96698e",
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return Image.asset(
+                                                    "assets/images/12345.jpg",
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                                loadingBuilder: (context, child, loadingProgress) {
+                                                  if(loadingProgress == null){
+                                                    return child;
+                                                  }else{
+                                                    return CircularProgressIndicator();
+                                                  }
+                                                },
+                                              ).image,
+                                              fit: BoxFit.cover),
+                                        )),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: ClipOval(
+                            // child: Image.network(
+                            //   "https://firebasestorage.googleapis.com/v0/b/plant-shopp.appspot.com/o/${FirebaseAuth.instance.currentUser?.uid}?alt=media&token=c47bb6e6-74ee-4042-86ac-9f182f96698e",
+                            //   fit: BoxFit.cover,
+                            //   errorBuilder: (context, error, stackTrace) {
+                            //     return Image.asset(
+                            //       "assets/images/12345.jpg",
+                            //       fit: BoxFit.cover,
+                            //     );
+                            //   },
+                            //   loadingBuilder: (context, child, loadingProgress) {
+                            //     return Center(child: CircularProgressIndicator());
+                            //   },
+                            // ),
 
-                          child: Image.network(
-                            "https://firebasestorage.googleapis.com/v0/b/plant-shopp.appspot.com/o/${FirebaseAuth.instance.currentUser?.uid}?alt=media&token=c47bb6e6-74ee-4042-86ac-9f182f96698e",
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                "assets/images/12345.jpg",
-                                fit: BoxFit.cover,
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if(loadingProgress == null){
-                                return child;
-                              }else{
-                                return CircularProgressIndicator();
-                              }
-                            },
+                            child: Image.network(
+                              "https://firebasestorage.googleapis.com/v0/b/plant-shopp.appspot.com/o/${FirebaseAuth.instance.currentUser?.uid}?alt=media&token=c47bb6e6-74ee-4042-86ac-9f182f96698e",
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  "assets/images/12345.jpg",
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if(loadingProgress == null){
+                                  return child;
+                                }else{
+                                  return CircularProgressIndicator();
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),

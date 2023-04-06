@@ -401,13 +401,6 @@ class _DetailPageState extends State<DetailPage> {
                                             );
                                           },
                                         );
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //       builder: (context) => DetailPage(
-                                        //         plantId: widget.plantList[index].plantId,
-                                        //       ),
-                                        //     ));
                                       },
                                       child: Container(
                                         width: 250,

@@ -74,8 +74,6 @@ class _RootPageState extends State<RootPage> {
   }
 
   init() {
-
-
     _firestore
         .collection("Users")
         .doc(_auth.currentUser?.uid)
@@ -85,37 +83,32 @@ class _RootPageState extends State<RootPage> {
         isloading = false;
         setState(() {});
       } else {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RegisterPage(),
-            )).then((value) {
-              isloading = false;
-          setState(() {});
-        });
-
+        Navigator.pushAndRemoveUntil(
+            context, MaterialPageRoute(builder: (context) => RegisterPage(),), (
+            route) => false);
       }
     });
   }
-  DateTime? lastPressed ;
+
+  DateTime? lastPressed;
+
   @override
   Widget build(BuildContext context) {
-
-
     return WillPopScope(
       onWillPop: () async {
-        if(_bottomNavIndex == 0){
+        if (_bottomNavIndex == 0) {
           final now = DateTime.now();
           final timeDiff = lastPressed == null
               ? Duration(seconds: 10)
               : now.difference(lastPressed!);
           if (timeDiff > Duration(seconds: 2)) {
             lastPressed = now;
-            showSnackbar("Exit?","Press Back Again to Exit.",snackPosition: SnackPosition.BOTTOM);
+            showSnackbar("Exit?", "Press Back Again to Exit.",
+                snackPosition: SnackPosition.BOTTOM);
             return false;
           }
           return true;
-        }else{
+        } else {
           _bottomNavIndex = 0;
           setState(() {
 
@@ -148,12 +141,14 @@ class _RootPageState extends State<RootPage> {
               )
             ],
           ),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Theme
+              .of(context)
+              .scaffoldBackgroundColor,
           elevation: 0.0,
         ),
         body: isloading ? Center(
           child: CircularProgressIndicator(),
-        ):IndexedStack(
+        ) : IndexedStack(
           index: _bottomNavIndex,
           children: _widgetOptions(),
         ),
